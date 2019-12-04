@@ -6,6 +6,9 @@ import org.junit.Test;
 import se.lexicon.tor.course.Course;
 import se.lexicon.tor.dao.CourseDaoList;
 
+import java.time.LocalDate;
+import java.time.Month;
+
 import static org.junit.Assert.*;
 
 public class CourseDaoListTest
@@ -174,4 +177,32 @@ public class CourseDaoListTest
 
         assertFalse(courseDaoList.removeCourse(course4));
     }
+
+    @Test
+    public void findByDateThere()
+    {
+        LocalDate localDate = LocalDate.of(2019, 12, 30);
+        Course course = new Course();
+        course.setCourseName("English");
+        course.setStartDate(localDate);
+        course.setId(3);
+        Course course2 = new Course();
+        course2.setCourseName("geo");
+        course2.setId(2);
+        course2.setStartDate(LocalDate.of(2020, Month.JANUARY, 20));
+        Course course3 = new Course();
+        course3.setCourseName("chem");
+        course3.setStartDate(LocalDate.now());
+        course3.setId(1);
+        courseDaoList.saveCourse(course);
+        courseDaoList.saveCourse(course2);
+        courseDaoList.saveCourse(course3);
+
+        assertTrue(courseDaoList.findByDate(localDate).contains(course));
+        assertTrue(courseDaoList.findByDate(LocalDate.of(2020, Month.JANUARY, 20)).contains(course2));
+        assertTrue(courseDaoList.findByDate(LocalDate.of(2020, 1, 20)).contains(course2));
+        assertTrue(courseDaoList.findByDate(LocalDate.now()).contains(course3));
+    }
 }
+
+

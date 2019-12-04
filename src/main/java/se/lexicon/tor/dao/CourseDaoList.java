@@ -54,7 +54,7 @@ public class CourseDaoList implements CourseDAO
     {
         List<Course> named = new ArrayList<>();
         for (Course course : courses) {
-            if (course.getStartDate() == (date)) {
+            if (course.getStartDate().equals(date)) {
                 named.add(course);
             }
         }
